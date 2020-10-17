@@ -293,6 +293,7 @@ utils.loadJSON = function(path, onLoaded, onError, skipParse, withCredentials, x
             if (xhr.status >= 400 || xhr.status == 0) {
                 if (onError) {
                     onError(xhr.status);
+                    console.log('JSON Load Error: path = '+path+' ; XHR status = ' + xhr.status);
                 }
                 break;
             }
@@ -306,7 +307,7 @@ utils.loadJSON = function(path, onLoaded, onError, skipParse, withCredentials, x
                     parsedData = JSON.parse(data);
                 } catch(e) {
                     // eslint-disable-next-line
-                    console.log('JSON Parse Error ('+path+'): ' + (e['message'] ? e['message'] : ''));
+                    console.log('JSON Parse Error: path = '+path+' : ' + (e['message'] ? e['message'] : ''));
                         
                     if (onError ) {
                         onError(xhr.status);

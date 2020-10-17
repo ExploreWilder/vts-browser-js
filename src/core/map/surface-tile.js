@@ -366,7 +366,7 @@ MapSurfaceTile.prototype.isMetanodeReady = function(tree, priority, preventLoad)
 
     if (this.seCounter != this.map.renderer.seCounter) {
         var renderer = this.map.renderer;
-        this.seCounter = renderer.seCounter;
+        this.seCounter = renderer.seCounter; // InvalidStateError: An attempt was made to use an object that is not, or is no longer, usable
         var node = this.metanode;
 
         if (renderer.useSuperElevation) {

@@ -77,8 +77,8 @@ UIControlCredits.prototype.update = function() {
         if (res[0] != '') {
             html += '<div class="vts-credits-supercell">';
             html += '<div class="vts-credits-cell">Imagery: ' + res[0] + '</div>';
-            html += res[1] ? '<div class="vts-credits-cell-button" id="vts-credits-imagery-more">and others</div>' : '';
-            html += '<div class="vts-credits-separator"></div>';
+            html += res[1] ? '<a href="#" class="vts-credits-cell-button" id="vts-credits-imagery-more">and others</a>' : '';
+            html += '<div class="vts-credits-separator">|</div>';
             html += '</div>';
             html2 = '<div class="vts-credits-list">';
             html2 += this.getCreditsString(credits['imagery'], '<br/>', true)[0] + '</div>';
@@ -90,8 +90,8 @@ UIControlCredits.prototype.update = function() {
         if (res[0] != '') {
             html += '<div class="vts-credits-supercell">';
             html += '<div class="vts-credits-cell">Map Data: ' + res[0] + '</div>';
-            html += res[1] ? '<div class="vts-credits-cell-button" id="vts-credits-mapdata-more">and others</div>' : '';
-            html += '<div class="vts-credits-separator"></div>';
+            html += res[1] ? '<a href="#" class="vts-credits-cell-button" id="vts-credits-mapdata-more">and others</a>' : '';
+            html += '<div class="vts-credits-separator">|</div>';
             html += '</div>';
             html3 = '<div class="vts-credits-list">';
             html3 += this.getCreditsString(credits['mapdata'], '<br/>', true)[0] + '</div>';
@@ -99,15 +99,26 @@ UIControlCredits.prototype.update = function() {
     }
 
     html += '<div class="vts-credits-supercell">';
-    html += '<div class="vts-credits-cell">Powered by <a class="vts-logo" href="https://www.melown.com/products/vts/" target="blank">VTS 3D Geospatial Software Stack</a></div>';
-    html += '<div class="vts-credits-separator"></div>';
+    html += '<div class="vts-credits-cell">Powered by <a href="https://www.melown.com/products/vts/" target="blank">VTS 3D Geospatial Software Stack</a></div>';
+    html += '<div class="vts-credits-separator">|</div>';
+    html += '</div>';
+
+    html += '<div class="vts-credits-supercell">';
+    html += '<div class="vts-credits-cell">Integrated by <a href="https://github.com/ExploreWilder/MainWebsite" target="_blank">Clement</a></div>';
     html += '</div>';
 
     if (this.lastHTML != html) {
         this.lastHTML = html;
-        this.credits.setHtml(html);
+        this.credits.setHtml('<div id="vts-credits-extended-content">' + html + '</div><div id="vts-credits-extend-button">i</div>');
 
-        var butt = this.control.getElement('vts-credits-imagery-more');
+        this.control.getElement('vts-credits-extended-content').setStyle("display", "none");
+
+        var butt = this.control.getElement('vts-credits-extend-button');
+        if (butt) {
+            butt.on('click', this.onExtendButton.bind(this));
+        }
+
+        butt = this.control.getElement('vts-credits-imagery-more');
         if (butt) {
             butt.on('click', this.onMoreButton.bind(this, butt, '2'));
         }
@@ -149,6 +160,14 @@ UIControlCredits.prototype.onMoreButton = function(butt, html) {
     
     this.ui.popup.show({'right' : Math.max(0,(rect['fromRight']-rect['width'])) + 'px',
         'bottom' : (rect['fromBottom']+7) + 'px'}, html);
+    
+    return false;
+};
+
+UIControlCredits.prototype.onExtendButton = function() {
+    var content = this.control.getElement('vts-credits-extended-content');
+    content.setStyle("display", (content.getStyle("display") != "inline-block") ? "inline-block" : "none");
+    return false;
 };
 
 

@@ -167,7 +167,10 @@ UIElement.prototype.addEvent = function(type, call, externalElement) {
             return; //todo remove event
         }
 
-//        function.call(new UIEvent(type, this, e || window.event));
+        if (typeof e.preventDefault === "function" && type == "click") {
+            e.preventDefault();
+        }
+
         call(new UIEvent(type, this, e || window.event));
     }).bind(this);
 
